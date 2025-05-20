@@ -10,6 +10,7 @@ $systemdirs = @(
     'program files'
     'program files (x86)'
     'programdata'
+    'appdata'
 )
 
 $normalizedpath = (Resolve-Path $inputpath).Path.ToLower()
