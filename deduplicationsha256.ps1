@@ -13,8 +13,14 @@ $systemdirs = @(
     'appdata'
 )
 
-$normalizedpath = (Resolve-Path $inputpath).Path.ToLower()
-$normalizedpath = $normalizedpath.Replace('\', '\\')
+try {
+    $resolvedPath = Resolve-Path -LiteralPath $inputpath -ErrorAction Stop
+    $normalizedpath = $resolvedPath.Path.ToLower()
+    $normalizedpath = $normalizedpath.Replace('\', '\\')
+} catch {
+    Write-Error "Failed to resolve path: $_"
+    exit
+}
 
 # check for system directories to prevent accidental deletion of system files
 if ($systemdirs | Where-Object { $normalizedpath -match "\\$_\\?" }) {
